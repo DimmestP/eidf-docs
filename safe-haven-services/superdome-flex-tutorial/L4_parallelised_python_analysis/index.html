@@ -952,8 +952,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../L1_Accessing_the_SDF_Inside_the_SHS/" class="md-nav__link">
-        Accessing the SDF Inside the SHS
+      <a href="../L1_Accessing_the_SDF_Inside_the_EPCC_TRE/" class="md-nav__link">
+        Accessing the SDF Inside the EPCC TRE
       </a>
     </li>
   
@@ -1389,17 +1389,16 @@ There are also some exercises with example answers to help you write your first 
 If the same operations are being applied to a large data set then Dask can split up the data set and apply the operations in parallel. 
 The three data objects that Dask can easily split up are:</p>
 <ul>
-<li>arrays</li>
+<li>
+<p><strong>Arrays:</strong> Contains large numbers of elements in multiple dimensions, but each element must be of the same type. Each element has a unique index that allows users to specify changes to individual elements.</p>
+</li>
+<li>
+<p><strong>Data frames:</strong> Contains large numbers of elements which are typically highly structured with multiple object types allowed together. Each element has a unique index that allows users to specify changes to individual elements.</p>
+</li>
+<li>
+<p><strong>Bags:</strong> Contains large numbers of elements which are semi/un-structured. Elements are immutable once inside the bag. Bags are useful for conducting initial analysis/wrangling of raw data before more complex analysis is performed.</p>
+</li>
 </ul>
-<p>Contains large numbers of elements in multiple dimensions, but each element must be of the same type. Each element has a unique index that allows users to specify changes to individual elements.</p>
-<ul>
-<li>data frames</li>
-</ul>
-<p>Contains large numbers of elements which are typically highly structured with multiple object types allowed together. Each element has a unique index that allows users to specify changes to individual elements.</p>
-<ul>
-<li>bags </li>
-</ul>
-<p>Contains large numbers of elements which are semi/un-structured. Elements are immutable once inside the bag. Bags are useful for conducting initial analysis/wrangling of raw data before more complex analysis is performed.</p>
 <h3 id="example-dask-array">Example Dask array</h3>
 <p>Try running the following Python using dask:</p>
 <pre><code>import dask.array as da
@@ -1554,10 +1553,10 @@ This probably means that you are not using fork to start your child processes an
 <h2 id="signposting">Signposting</h2>
 <ul>
 <li>
-<p>More information on parallelised python code can be found in the carpentries lesson https://carpentries-incubator.github.io/lesson-parallel-python/</p>
+<p>More information on parallelised python code can be found in the <a href="https://carpentries-incubator.github.io/lesson-parallel-python/">carpentries lesson</a></p>
 </li>
 <li>
-<p>Dask itself has several detailed tutorials https://www.dask.org/get-started</p>
+<p>Dask itself has several detailed <a href="https://www.dask.org/get-started">tutorials</a></p>
 </li>
 </ul>
 
