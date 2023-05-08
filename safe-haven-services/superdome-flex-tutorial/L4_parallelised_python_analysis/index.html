@@ -1380,14 +1380,14 @@ Python contains a Global Interpreter Lock (GIL) which means the python interpret
 The advantage of the GIL is that C libraries can be easily integrated into Python scripts without checking if they are thread-safe.
 However, this means that most common python modules cannot be easily parallelised.
 Fortunately, there are now several re-implementations of common python modules that work around the GIL and are therefore parallelisable.
-Dask is a python module that contains a parallelised version of the pandas data frame as well as a general format for parallelising any python code.  </p>
+Dask is a python module that contains a parallelised version of the pandas data frame as well as a general format for parallelising any python code.</p>
 <h2 id="dask">Dask</h2>
-<p>Dask enables thread-safe parallelised python execution by creating task graphs (a graph of the dependencies of the inputs and outputs of each function) and then deducing which ones can be run separately. 
+<p>Dask enables thread-safe parallelised python execution by creating task graphs (a graph of the dependencies of the inputs and outputs of each function) and then deducing which ones can be run separately.
 This lesson introduces some general concepts required for programming using Dask.
-There are also some exercises with example answers to help you write your first parallelised python scripts. </p>
+There are also some exercises with example answers to help you write your first parallelised python scripts.</p>
 <h2 id="arrays-data-frames-and-bags">Arrays, data frames and bags</h2>
-<p>Dask contains three data objects to enable parallelised analysis of large data sets in a way familiar to most python programmers. 
-If the same operations are being applied to a large data set then Dask can split up the data set and apply the operations in parallel. 
+<p>Dask contains three data objects to enable parallelised analysis of large data sets in a way familiar to most python programmers.
+If the same operations are being applied to a large data set then Dask can split up the data set and apply the operations in parallel.
 The three data objects that Dask can easily split up are:</p>
 <ul>
 <li>
@@ -1402,154 +1402,156 @@ The three data objects that Dask can easily split up are:</p>
 </ul>
 <h3 id="example-dask-array">Example Dask array</h3>
 <p>Try running the following Python using dask:</p>
-<pre><code>import dask.array as da
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
 
-x = da.random.random((10000, 10000), chunks=(1000, 1000))
+<span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">),</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
 
-print(x)
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-print(x.compute())
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
 
-print(x.sum())
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
 
-print(x.sum().compute())
-</code></pre>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+</code></pre></div>
 <p>This should demonstrate that dask is both straightforward to implement simple parallelism, but also lazy in that it does not compute anything until you force it to with the .compute() function.</p>
 <p>You can also try out dask DataFrames, using the following code:</p>
-<pre><code>import dask.dataframe as dd
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="k">as</span> <span class="nn">dd</span>
 
-df = dd.read_csv('surveys.csv')
+<span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;surveys.csv&#39;</span><span class="p">)</span>
 
-df.head()
-df.tail()
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 
-df.weight.max().compute()
-</code></pre>
+<span class="n">df</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</code></pre></div>
 <p>You can try using different blocksizes when reading in the csv file, and then undertaking an operation on the data, as follows:
 Experiment with varying blocksizes, although you should be aware that making your block size too small is likely to cause poor performance (the blocksize affects the number of bytes read in at each operation).</p>
-<pre><code>df = dd.read_csv('surveys.csv', blocksize="10000")
-df.weight.max().compute()
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">df</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;surveys.csv&#39;</span><span class="p">,</span> <span class="n">blocksize</span><span class="o">=</span><span class="s2">&quot;10000&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</code></pre></div>
 <p>You can also experiment with Dask Bags to see how that functionality works:</p>
-<pre><code>import dask.bag as db
-from operator import add
-    b = db.from_sequence([1, 2, 3, 4, 5], npartitions=2) 
-    print(b.compute())
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">add</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+</code></pre></div>
 <h2 id="dask-delayed">Dask Delayed</h2>
 <p>Dask delayed lets you construct your own task graphs/parallelism from Python functions. Try parallelising the code below using the .delayed function or the @delayed decorator:</p>
-<pre><code>def inc(x):
-    return x + 1
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">inc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
 
-def double(x):
-    return x * 2
+<span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
 
-def add(x, y):
-    return x + y
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 
-data = [1, 2, 3, 4, 5]
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
 
-output = []
-for x in data:
-    a = inc(x)
-    b = double(x)
-    c = add(a, b)
-    output.append(c)
+<span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">inc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">double</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 
-total = sum(output)
+<span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 
-print(total)
-</code></pre>
+<span class="nb">print</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+</code></pre></div>
 <h2 id="mandelbrot-exercise">Mandelbrot Exercise</h2>
 <p>The code below calculates the members of a Mandelbrot set using Python functions:</p>
-<pre><code>import sys
-import time
-import numpy as np
-import matplotlib.pyplot as plt
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-def mandelbrot(h, w, maxit=20, r=2):
-    """Returns an image of the Mandelbrot fractal of size (h,w).""" 
-    start = time.time()
+<span class="k">def</span> <span class="nf">mandelbrot</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">maxit</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns an image of the Mandelbrot fractal of size (h,w).&quot;&quot;&quot;</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    x = np.linspace(-2.5, 1.5, 4*h+1)
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">h</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 
-    y = np.linspace(-1.5, 1.5, 3*w+1)
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">w</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 
-    A, B = np.meshgrid(x, y)
+    <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-    C = A + B*1j
+    <span class="n">C</span> <span class="o">=</span> <span class="n">A</span> <span class="o">+</span> <span class="n">B</span><span class="o">*</span><span class="mi">1</span><span class="n">j</span>
 
-    z = np.zeros_like(C)
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
 
-    divtime = maxit + np.zeros(z.shape, dtype=int)
+    <span class="n">divtime</span> <span class="o">=</span> <span class="n">maxit</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
-    for i in range(maxit):
-        z = z**2 + C
-        diverge = abs(z) &gt; r # who is diverging 
-        div_now = diverge &amp; (divtime == maxit) # who is diverging now 
-        divtime[div_now] = i # note when
-        z[diverge] = r # avoid diverging too much
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxit</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">C</span>
+        <span class="n">diverge</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">r</span> <span class="c1"># who is diverging</span>
+        <span class="n">div_now</span> <span class="o">=</span> <span class="n">diverge</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">divtime</span> <span class="o">==</span> <span class="n">maxit</span><span class="p">)</span> <span class="c1"># who is diverging now</span>
+        <span class="n">divtime</span><span class="p">[</span><span class="n">div_now</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="c1"># note when</span>
+        <span class="n">z</span><span class="p">[</span><span class="n">diverge</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span> <span class="c1"># avoid diverging too much</span>
 
-    end = time.time()
+    <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    return divtime, end-start
+    <span class="k">return</span> <span class="n">divtime</span><span class="p">,</span> <span class="n">end</span><span class="o">-</span><span class="n">start</span>
 
-h = 2000
-w = 2000
+<span class="n">h</span> <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">w</span> <span class="o">=</span> <span class="mi">2000</span>
 
-mandelbrot_space, time = mandelbrot(h, w)
+<span class="n">mandelbrot_space</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">mandelbrot</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
 
-plt.imshow(mandelbrot_space)
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">mandelbrot_space</span><span class="p">)</span>
 
-print(time)
-</code></pre>
-<p>Your task is to parallelise this code using Dask Array functionality. Using the base python code above, extend it with Dask Array for the main arrays in the computation. Remember you need to specify a chunk size with Dask Arrays, and you will also need to call compute at some point to force Dask to actually undertake the computation. Note, depending on where you run this you may not see any actual speed up of the computation. You need access to extra resources (compute cores) for the calculation to go faster. If in doubt, submit a python script of your solution to the SDF compute nodes to see if you see speed up there.
+<span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+</code></pre></div>
+<p>Your task is to parallelise this code using Dask Array functionality.
+Using the base python code above, extend it with Dask Array for the main arrays in the computation. Remember you need to specify a chunk size with Dask Arrays, and you will also need to call compute at some point to force Dask to actually undertake the computation. Note, depending on where you run this you may not see any actual speed up of the computation. You need access to extra resources (compute cores) for the calculation to go faster.
+If in doubt, submit a python script of your solution to the SDF compute nodes to see if you see speed up there.
 If you are struggling with this parallelisation exercise, there is a solution available for you in the dask- mandel.py file.</p>
 <h2 id="pi-exercise">Pi Exercise</h2>
 <p>The code below calculates Pi using a function that can split it up into chunks and calculate each chunk separately. Currently it uses a single chunk to produce the final value of Pi, but that can be changed by calling pi_chunk multiple times with different inputs. This is not necessarily the most efficient method for calculating Pi in serial, but it does enable parallelisation of the calculation of Pi using multiple copies of pi_chunk called simultaneously.</p>
-<pre><code>import time
-import sys
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
-# Calculate pi in chunks
+<span class="c1"># Calculate pi in chunks</span>
 
-# n     - total number of steps to be undertaken across all chunks 
-# lower - the lowest number of this chunk
-# upper - the upper limit of this chunk such that i &lt; upper
+<span class="c1"># n     - total number of steps to be undertaken across all chunks</span>
+<span class="c1"># lower - the lowest number of this chunk</span>
+<span class="c1"># upper - the upper limit of this chunk such that i &lt; upper</span>
 
-def pi_chunk(n, lower, upper):
-    step = 1.0 / n
-    p = step * sum(4.0/(1.0 + ((i + 0.5) * (i + 0.5) * step * step)) for i in range(lower, upper))
-    return p
+<span class="k">def</span> <span class="nf">pi_chunk</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">):</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">n</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">step</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="mf">4.0</span><span class="o">/</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span> <span class="o">*</span> <span class="n">step</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">p</span>
 
-# Number of slices
+<span class="c1"># Number of slices</span>
 
-num_steps = 10000000
+<span class="n">num_steps</span> <span class="o">=</span> <span class="mi">10000000</span>
 
-print("Calculating PI using:\n " + str(num_steps) + " slices")
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculating PI using:</span><span class="se">\n</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; slices&quot;</span><span class="p">)</span>
 
-start = time.time()
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-# Calculate using a single chunk containing all steps
+<span class="c1"># Calculate using a single chunk containing all steps</span>
 
-p = pi_chunk(num_steps, 1, num_steps)
+<span class="n">p</span> <span class="o">=</span> <span class="n">pi_chunk</span><span class="p">(</span><span class="n">num_steps</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">)</span>
 
-stop = time.time()
+<span class="n">stop</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-print("Obtained value of Pi: " + str(p))
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Obtained value of Pi: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
 
-print("Time taken: " + str(stop - start) + " seconds")
-</code></pre>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Time taken: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; seconds&quot;</span><span class="p">)</span>
+</code></pre></div>
 <p>For this exercise, your task is to implemented the above code on the SDF, and then parallelise using Dask. There are a number of different ways you could parallelise this using Dask, but we suggest using the Futures map functionality to run the pi_chunk function on a range of different inputs. Futures map has the following definition:</p>
-<pre><code>Client.map(func, *iterables[, key, workers, ...])
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">Client</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">iterables</span><span class="p">[,</span> <span class="n">key</span><span class="p">,</span> <span class="n">workers</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
+</code></pre></div>
 <p>Where func is the function you want to run, and then the subsequent arguments are inputs to that function. To utilise this for the Pi calculation, you will first need to setup and configure a Dask Client to use, and also create and populate lists or vectors of inputs to be passed to the pi_chunk function for each function run that Dask launches.</p>
 <p>If you run Dask with processes then it is possible that you will get errors about forking processes, such as these:</p>
-<pre><code>An attempt has been made to start a new process before the current process has finished its bootstrapping phase.
-This probably means that you are not using fork to start your child processes and you have forgotten to use the proper idiom in the main module:
-</code></pre>
+<div class="highlight"><pre><span></span><code>    <span class="n">An</span> <span class="n">attempt</span> <span class="n">has</span> <span class="n">been</span> <span class="n">made</span> <span class="n">to</span> <span class="n">start</span> <span class="n">a</span> <span class="n">new</span> <span class="n">process</span> <span class="n">before</span> <span class="n">the</span> <span class="n">current</span> <span class="n">process</span> <span class="n">has</span> <span class="n">finished</span> <span class="n">its</span> <span class="n">bootstrapping</span> <span class="n">phase</span><span class="o">.</span>
+    <span class="n">This</span> <span class="n">probably</span> <span class="n">means</span> <span class="n">that</span> <span class="n">you</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">using</span> <span class="n">fork</span> <span class="n">to</span> <span class="n">start</span> <span class="n">your</span> <span class="n">child</span> <span class="n">processes</span> <span class="ow">and</span> <span class="n">you</span> <span class="n">have</span> <span class="n">forgotten</span> <span class="n">to</span> <span class="n">use</span> <span class="n">the</span> <span class="n">proper</span> <span class="n">idiom</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">main</span> <span class="n">module</span><span class="p">:</span>
+</code></pre></div>
 <p>In that case you need to encapsulate your code within a main function, using something like this:</p>
-<pre><code>if __name__ == "__main__":
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+</code></pre></div>
 <p>If you are struggling with this exercise then there is a solution available for you in the dask-pi.py file.</p>
 <h2 id="signposting">Signposting</h2>
 <ul>

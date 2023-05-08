@@ -990,6 +990,19 @@
     What is the Superdome Flex?
   </a>
   
+    <nav class="md-nav" aria-label="What is the Superdome Flex?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-point" class="md-nav__link">
+    Key Point
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1289,6 +1302,19 @@
     What is the Superdome Flex?
   </a>
   
+    <nav class="md-nav" aria-label="What is the Superdome Flex?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-point" class="md-nav__link">
+    Key Point
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1371,61 +1397,61 @@
 <li>Access to local copies of R (CRAN) and python (conda) repositories</li>
 <li><a href="https://docs.sylabs.io/guides/3.5/user-guide/introduction.html">Singularity</a> container platform</li>
 </ul>
-<p><strong>Key Point</strong> </p>
+<h3 id="key-point">Key Point</h3>
 <p><code>The SDF is within the TRE. Therefore, the same restrictions apply, i.e. the SDF is isolated from the internet (no downloading code from public GitHub repos) and copying/recording/extracting anything on the SDF outside of the TRE is strictly prohibited unless through approved processes.</code></p>
 <h2 id="accessing-the-sdf">Accessing the SDF</h2>
-<p>Users can only access the SDF by ssh-ing into it via their VM desktop. </p>
+<p>Users can only access the SDF by ssh-ing into it via their VM desktop.</p>
 <h3 id="hello-world">Hello world</h3>
-<pre><code>**** On the VM desktop terminal ****
+<div class="highlight"><pre><span></span><code>****<span class="w"> </span>On<span class="w"> </span>the<span class="w"> </span>VM<span class="w"> </span>desktop<span class="w"> </span>terminal<span class="w"> </span>****
 
-ssh shs-sdf01
-&lt;Enter VM password&gt;
+ssh<span class="w"> </span>shs-sdf01
+&lt;Enter<span class="w"> </span>VM<span class="w"> </span>password&gt;
 
-echo "Hello World"
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hello World&quot;</span>
 
-exit
-</code></pre>
+<span class="nb">exit</span>
+</code></pre></div>
 <h2 id="sdf-vs-vm-file-systems">SDF vs VM file systems</h2>
 <p>The SDF file system is separate from the VM file system, which is again separate from the project data space. Files need to be transferred between the three systems for any analysis to be completed within the SDF.</p>
 <h3 id="example-showing-separate-sdf-and-vm-file-systems">Example showing separate SDF and VM file systems</h3>
-<pre><code>**** On the VM desktop terminal ****
+<div class="highlight"><pre><span></span><code>****<span class="w"> </span>On<span class="w"> </span>the<span class="w"> </span>VM<span class="w"> </span>desktop<span class="w"> </span>terminal<span class="w"> </span>****
 
-cd ~ 
-touch test.txt
+<span class="nb">cd</span><span class="w"> </span>~
+touch<span class="w"> </span>test.txt
 ls
 
-ssh shs-sdf01
-&lt;Enter VM password&gt;
+ssh<span class="w"> </span>shs-sdf01
+&lt;Enter<span class="w"> </span>VM<span class="w"> </span>password&gt;
 
-ls # test.txt is not here
-exit
+ls<span class="w"> </span><span class="c1"># test.txt is not here</span>
+<span class="nb">exit</span>
 
-scp test.txt shs-sdf01
+scp<span class="w"> </span>test.txt<span class="w"> </span>shs-sdf01
 
-ssh shs-sdf01
-&lt;Enter VM password&gt;
+ssh<span class="w"> </span>shs-sdf01
+&lt;Enter<span class="w"> </span>VM<span class="w"> </span>password&gt;
 
-ls # test.txt is here
-</code></pre>
+ls<span class="w"> </span><span class="c1"># test.txt is here</span>
+</code></pre></div>
 <h3 id="example-copying-data-between-project-data-space-and-sdf">Example copying data between project data space and SDF</h3>
 <p>Transferring and synchronising data sets between the project data space and the SDF is easier with the rsync command (rather than manually checking and copying files/folders with scp). rsync only transfers files that are different between the two targets, more details in its manual.</p>
-<pre><code>**** On the VM desktop terminal ****
+<div class="highlight"><pre><span></span><code>****<span class="w"> </span>On<span class="w"> </span>the<span class="w"> </span>VM<span class="w"> </span>desktop<span class="w"> </span>terminal<span class="w"> </span>****
 
-man rsync # check instructions for using rsync
+man<span class="w"> </span>rsync<span class="w"> </span><span class="c1"># check instructions for using rsync</span>
 
-rsync -avPz -e ssh /safe_data/my_project/current_wip shs-sdf01: # sync project folder and SDF home folder
+rsync<span class="w"> </span>-avPz<span class="w"> </span>-e<span class="w"> </span>ssh<span class="w"> </span>/safe_data/my_project/current_wip<span class="w"> </span>shs-sdf01:<span class="w"> </span><span class="c1"># sync project folder and SDF home folder</span>
 
-ssh shs-sdf01
-&lt;Enter VM password&gt;
+ssh<span class="w"> </span>shs-sdf01
+&lt;Enter<span class="w"> </span>VM<span class="w"> </span>password&gt;
 
-*** Conduct analysis on SDF ***
+***<span class="w"> </span>Conduct<span class="w"> </span>analysis<span class="w"> </span>on<span class="w"> </span>SDF<span class="w"> </span>***
 
-exit
+<span class="nb">exit</span>
 
-rsync -avPz -e ssh /safe_data/my_project/current_wip shs-sdf01: # sync project file and ssh home page # re-syncronise project folder and SDF home folder
+rsync<span class="w"> </span>-avPz<span class="w"> </span>-e<span class="w"> </span>ssh<span class="w"> </span>/safe_data/my_project/current_wip<span class="w"> </span>shs-sdf01:<span class="w"> </span><span class="c1"># sync project file and ssh home page # re-syncronise project folder and SDF home folder</span>
 
-*** Optionally remove the project folder on SDF ***
-</code></pre>
+***<span class="w"> </span>Optionally<span class="w"> </span>remove<span class="w"> </span>the<span class="w"> </span>project<span class="w"> </span>folder<span class="w"> </span>on<span class="w"> </span>SDF<span class="w"> </span>***
+</code></pre></div>
 
 
 

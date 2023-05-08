@@ -1388,7 +1388,7 @@
 
 <h1 id="submitting-scripts-to-slurm">Submitting Scripts to Slurm</h1>
 <h2 id="what-is-slurm">What is Slurm?</h2>
-<p>Slurm is a workload manager that schedules jobs submitted to a shared resource. 
+<p>Slurm is a workload manager that schedules jobs submitted to a shared resource.
 Slurm is a well-developed tool that can manage large computing clusters, such as ARCHER2, with thousands of users each with different priorities and allocated computing hours.
 Inside the TRE, Slurm is used to help ensure all users of the SDF get equitable access.
 Therefore, users who are submitting jobs with high resource requirements (&gt;80 cores, &gt;1TB of memory) may have to wait longer for resource allocation to enable users with lower resource demands to continue their work.</p>
@@ -1404,14 +1404,14 @@ Users of the SDF are required to consider the needs of the wider community by:</
 <p>requesting resources appropriate to their intended task and timeline.</p>
 </li>
 <li>
-<p>submitting resource requests via Slurm to enable automatic scheduling and fair allocation alongside other user requests.  </p>
+<p>submitting resource requests via Slurm to enable automatic scheduling and fair allocation alongside other user requests.</p>
 </li>
 </ul>
 <p>Users can develop code, complete test runs, and debug from the SDF command line without using Slurm.
-However, only 32 of the 512 cores are accessible without submitting a job request to Slurm. 
+However, only 32 of the 512 cores are accessible without submitting a job request to Slurm.
 These cores are accessible to all users simultaneously.</p>
 <h2 id="slurm-basics">Slurm basics</h2>
-<p>Slurm revolves around four main entities: nodes, partitions, jobs and job steps. 
+<p>Slurm revolves around four main entities: nodes, partitions, jobs and job steps.
 Nodes and partitions are relevant for more complex distributed computing clusters so Slurm can allocate appropriate resources to jobs across multiple pieces of hardware.
 Jobs are requests for resources and job steps are what need to be completed once the resources have been allocated (completed in sequence or parallel).
 Job steps can be further broken down into tasks.</p>
@@ -1427,82 +1427,82 @@ Job steps can be further broken down into tasks.</p>
 <p>scancel: stop a job from continuing.</p>
 </li>
 <li>
-<p>sbatch: submit a job script containing multiple steps (i.e. srun) to be completed with the defined resources. This is the typical function for submitting jobs to Slurm. </p>
+<p>sbatch: submit a job script containing multiple steps (i.e. srun) to be completed with the defined resources. This is the typical function for submitting jobs to Slurm.</p>
 </li>
 </ul>
 <p>More details on these functions (and several not mentioned here) can be seen on the <a href="https://slurm.schedmd.com/quickstart.html">Slurm website</a>.</p>
 <h2 id="submitting-a-simple-job">Submitting a simple job</h2>
-<pre><code>*** SDF Terminal ***
+<div class="highlight"><pre><span></span><code>***<span class="w"> </span>SDF<span class="w"> </span>Terminal<span class="w"> </span>***
 
-squeue -u $USER # Check if there are jobs already queued or running for you
+squeue<span class="w"> </span>-u<span class="w"> </span><span class="nv">$USER</span><span class="w"> </span><span class="c1"># Check if there are jobs already queued or running for you</span>
 
-srun --job-name=my_first_slurm_job --nodes 1 --ntasks 10 --cpus-per-task 2 echo 'Hello World'
+srun<span class="w"> </span>--job-name<span class="o">=</span>my_first_slurm_job<span class="w"> </span>--nodes<span class="w"> </span><span class="m">1</span><span class="w"> </span>--ntasks<span class="w"> </span><span class="m">10</span><span class="w"> </span>--cpus-per-task<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;Hello World&#39;</span>
 
-squeue -u $USER --state=CD # List all completed jobs
-</code></pre>
+squeue<span class="w"> </span>-u<span class="w"> </span><span class="nv">$USER</span><span class="w"> </span>--state<span class="o">=</span>CD<span class="w"> </span><span class="c1"># List all completed jobs</span>
+</code></pre></div>
 <p>In this instance, the srun command completes two steps: job submission and job step execution. First, it submits a job request to be allocated 10 CPUs (1 CPU for each of the 10 tasks). Once the resources are available, it executes the job step consisting of 10 tasks each running the 'echo "Hello World"' function.</p>
 <p>srun accepts a wide variety of options to specify the resources required to complete its job step.
-Within the SDF, you must always request 1 node (as there is only one node) and never use the --exclusive option (as no one will have exclusive access to this shared resource). 
+Within the SDF, you must always request 1 node (as there is only one node) and never use the --exclusive option (as no one will have exclusive access to this shared resource).
 Notice that running srun blocks your terminal from accepting any more commands and the output from each task in the job step, i.e. Hello World in the above example, outputs to your terminal.
 We will compare this to running a sbatch command.</p>
 <h2 id="submitting-a-batch-job">Submitting a batch job</h2>
-<p>Batch jobs are incredibly useful because they run in the background without blocking your terminal. Batch jobs also output the results to a log file rather than straight to your terminal. 
-This allows you to check a job was completed successfully at a later time so you can move on to other things whilst waiting for a job to complete. </p>
+<p>Batch jobs are incredibly useful because they run in the background without blocking your terminal. Batch jobs also output the results to a log file rather than straight to your terminal.
+This allows you to check a job was completed successfully at a later time so you can move on to other things whilst waiting for a job to complete.</p>
 <p>A batch job can be submitted to Slurm by passing a job script to the sbatch command. The first few lines of a job script outline the resources to be requested as part of the job. The remainder of a job script consists of one or more srun commands outlining the job steps that need to be completed (in sequence or parallel) once the resources are available. There are numerous options for defining the resource requirements of a job including:</p>
 <ul>
 <li>The number of CPUs available for each active task: --ncpus-per-task</li>
 <li>The amount of memory available per CPU (in MB by default but can be in GB if G is appended to the number): --mem-per-cpu</li>
 <li>The total amount of memory (in MB by default but can be in GB if G is appended to the number): --mem</li>
-<li>The maximum number of tasks invoked at one time: --ntasks </li>
+<li>The maximum number of tasks invoked at one time: --ntasks</li>
 <li>The number of nodes (Always 1 when using SDF): --nodes</li>
 <li>If the job requires exclusive access to all the resources of a node (never part of job request, but required for parallel job steps within batch scripts): --exclusive</li>
 </ul>
 <p>More information on the various options are in the <a href="https://slurm.schedmd.com/sbatch.html">sbatch documentation</a>.</p>
 <h3 id="example-job-script">Example Job Script</h3>
-<pre><code>#!/usr/bin/env bash
-#SBATCH -J HelloWorld
-#SBATCH --nodes=1
-#SBATCH --tasks-per-node=10
-#SBATCH --cpus-per-task=2
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env bash</span>
+<span class="c1">#SBATCH -J HelloWorld</span>
+<span class="c1">#SBATCH --nodes=1</span>
+<span class="c1">#SBATCH --tasks-per-node=10</span>
+<span class="c1">#SBATCH --cpus-per-task=2</span>
 
-% Run echo task in sequence
+%<span class="w"> </span>Run<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>task<span class="w"> </span><span class="k">in</span><span class="w"> </span>sequence
 
-srun --ntasks 5 --cpus-per-task 2 echo "Series Task A. Time: " $(date +”%H:%M:%S”)
+srun<span class="w"> </span>--ntasks<span class="w"> </span><span class="m">5</span><span class="w"> </span>--cpus-per-task<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Series Task A. Time: &quot;</span><span class="w"> </span><span class="k">$(</span>date<span class="w"> </span>+”%H:%M:%S”<span class="k">)</span>
 
-srun --ntasks 5 --cpus-per-task 2 echo "Series Task B. Time: " $(date +”%H:%M:%S”)
+srun<span class="w"> </span>--ntasks<span class="w"> </span><span class="m">5</span><span class="w"> </span>--cpus-per-task<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Series Task B. Time: &quot;</span><span class="w"> </span><span class="k">$(</span>date<span class="w"> </span>+”%H:%M:%S”<span class="k">)</span>
 
-% Run echo task in parallel with the ampersand character
+%<span class="w"> </span>Run<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>task<span class="w"> </span><span class="k">in</span><span class="w"> </span>parallel<span class="w"> </span>with<span class="w"> </span>the<span class="w"> </span>ampersand<span class="w"> </span>character
 
-srun --exclusive --ntasks 5 --cpus-per-task 2 echo "Parallel Task A. Time: " $(date +”%H:%M:%S”) &amp;
+srun<span class="w"> </span>--exclusive<span class="w"> </span>--ntasks<span class="w"> </span><span class="m">5</span><span class="w"> </span>--cpus-per-task<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Parallel Task A. Time: &quot;</span><span class="w"> </span><span class="k">$(</span>date<span class="w"> </span>+”%H:%M:%S”<span class="k">)</span><span class="w"> </span><span class="p">&amp;</span>
 
-srun --exclusive --ntasks 5 --cpus-per-task 2 echo "Parallel Task B. Time: " $(date +”%H:%M:%S”)
-</code></pre>
+srun<span class="w"> </span>--exclusive<span class="w"> </span>--ntasks<span class="w"> </span><span class="m">5</span><span class="w"> </span>--cpus-per-task<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Parallel Task B. Time: &quot;</span><span class="w"> </span><span class="k">$(</span>date<span class="w"> </span>+”%H:%M:%S”<span class="k">)</span>
+</code></pre></div>
 <h3 id="example-job-script-submission">Example job script submission</h3>
-<pre><code>*** SDF Terminal ***
+<div class="highlight"><pre><span></span><code>***<span class="w"> </span>SDF<span class="w"> </span>Terminal<span class="w"> </span>***
 
-nano example_job_script.sh
+nano<span class="w"> </span>example_job_script.sh
 
-*** Copy example job script above ***
+***<span class="w"> </span>Copy<span class="w"> </span>example<span class="w"> </span>job<span class="w"> </span>script<span class="w"> </span>above<span class="w"> </span>***
 
-sbatch example_job_script.sh
+sbatch<span class="w"> </span>example_job_script.sh
 
-squeue -u $USER -r 5
+squeue<span class="w"> </span>-u<span class="w"> </span><span class="nv">$USER</span><span class="w"> </span>-r<span class="w"> </span><span class="m">5</span>
 
-*** Wait for the batch job to be completed ***
+***<span class="w"> </span>Wait<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>batch<span class="w"> </span>job<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>completed<span class="w"> </span>***
 
-cat example_job_script.log # The series tasks should be grouped together and the parallel tasks interspersed.
-</code></pre>
-<p>The example batch job is intended to show two things: 1) the usefulness of the sbatch command and 2) the versatility of a job script. As the sbatch command allows you to submit scripts and check their outcome at your own discretion, it is the most common way of interacting with Slurm. Meanwhile, the job script command allows you to specify one global resource request and break it up into multiple job steps with different resource demands that can be completed in parallel or in sequence. </p>
+cat<span class="w"> </span>example_job_script.log<span class="w"> </span><span class="c1"># The series tasks should be grouped together and the parallel tasks interspersed.</span>
+</code></pre></div>
+<p>The example batch job is intended to show two things: 1) the usefulness of the sbatch command and 2) the versatility of a job script. As the sbatch command allows you to submit scripts and check their outcome at your own discretion, it is the most common way of interacting with Slurm. Meanwhile, the job script command allows you to specify one global resource request and break it up into multiple job steps with different resource demands that can be completed in parallel or in sequence.</p>
 <h3 id="submitting-pythonr-code-to-slurm">Submitting python/R code to Slurm</h3>
-<p>Although submitting job steps containing python/R analysis scripts can be done with srun directly, as below, it is more common to submit bash scripts that call the analysis scripts after setting up the environment (i.e. after calling conda activate). </p>
-<pre><code>**** Python code job submission ****
+<p>Although submitting job steps containing python/R analysis scripts can be done with srun directly, as below, it is more common to submit bash scripts that call the analysis scripts after setting up the environment (i.e. after calling conda activate).</p>
+<div class="highlight"><pre><span></span><code>****<span class="w"> </span>Python<span class="w"> </span>code<span class="w"> </span>job<span class="w"> </span>submission<span class="w"> </span>****
 
-srun --job-name=my_first_python_job --nodes 1 --ntasks 10 --cpus-per-task 2 --mem 10G python example_script.py
+srun<span class="w"> </span>--job-name<span class="o">=</span>my_first_python_job<span class="w"> </span>--nodes<span class="w"> </span><span class="m">1</span><span class="w"> </span>--ntasks<span class="w"> </span><span class="m">10</span><span class="w"> </span>--cpus-per-task<span class="w"> </span><span class="m">2</span><span class="w"> </span>--mem<span class="w"> </span>10G<span class="w"> </span>python<span class="w"> </span>example_script.py
 
-**** R code job submission ****
+****<span class="w"> </span>R<span class="w"> </span>code<span class="w"> </span>job<span class="w"> </span>submission<span class="w"> </span>****
 
-srun --job-name=my_first_r_job --nodes 1 --ntasks 10 --cpus-per-task 2 --mem 10G Rscript -e example_script.R
-</code></pre>
+srun<span class="w"> </span>--job-name<span class="o">=</span>my_first_r_job<span class="w"> </span>--nodes<span class="w"> </span><span class="m">1</span><span class="w"> </span>--ntasks<span class="w"> </span><span class="m">10</span><span class="w"> </span>--cpus-per-task<span class="w"> </span><span class="m">2</span><span class="w"> </span>--mem<span class="w"> </span>10G<span class="w"> </span>Rscript<span class="w"> </span>-e<span class="w"> </span>example_script.R
+</code></pre></div>
 <h2 id="signposting">Signposting</h2>
 <p>Useful websites for learning more about Slurm:</p>
 <ul>

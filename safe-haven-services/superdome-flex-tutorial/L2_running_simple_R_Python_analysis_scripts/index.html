@@ -1305,58 +1305,58 @@
 
 
 <h1 id="running-simple-rpython-scripts">Running Simple R/Python Scripts</h1>
-<p>Running analysis scripts on the SDF is slightly different to running scripts on the Desktop VMs. 
-The Linux distribution differs between the two with the SDF using Red Hat Enterprise Linux (RHEL) and the Desktop VMs using Ubuntu. 
+<p>Running analysis scripts on the SDF is slightly different to running scripts on the Desktop VMs.
+The Linux distribution differs between the two with the SDF using Red Hat Enterprise Linux (RHEL) and the Desktop VMs using Ubuntu.
 Therefore, it is highly advisable to use virtual environments (e.g. conda environments) to complete any analysis and aid the transition between the two distributions.
-Conda should run out of the box on the Desktop VMs, but some configuration is required on the SDF. </p>
+Conda should run out of the box on the Desktop VMs, but some configuration is required on the SDF.</p>
 <h2 id="setting-up-conda-environments-on-the-sdf">Setting up conda environments on the SDF</h2>
-<pre><code>*** SDF Terminal ***
+<div class="highlight"><pre><span></span><code>***<span class="w"> </span>SDF<span class="w"> </span>Terminal<span class="w"> </span>***
 
-conda activate base # Test conda environment
+conda<span class="w"> </span>activate<span class="w"> </span>base<span class="w"> </span><span class="c1"># Test conda environment</span>
 
-# Conda command will not be found. There is no need to install!
+<span class="c1"># Conda command will not be found. There is no need to install!</span>
 
-eval "$(/opt/anaconda3/bin/conda shell.bash hook)" # Tells your terminal where conda is
+<span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>/opt/anaconda3/bin/conda<span class="w"> </span>shell.bash<span class="w"> </span>hook<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="c1"># Tells your terminal where conda is</span>
 
-conda init # changes your .bashrc file so conda is automatically available in the future
+conda<span class="w"> </span>init<span class="w"> </span><span class="c1"># changes your .bashrc file so conda is automatically available in the future</span>
 
-conda config --set auto_activate_base false # stop conda base from being activated on startup
+conda<span class="w"> </span>config<span class="w"> </span>--set<span class="w"> </span>auto_activate_base<span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="c1"># stop conda base from being activated on startup</span>
 
-python # note python version
+python<span class="w"> </span><span class="c1"># note python version</span>
 
-exit()
-</code></pre>
+exit<span class="o">()</span>
+</code></pre></div>
 <p>The base conda environment is now available but note that the python and gcc compilers are not the latest (Python 3.9.7 and gcc 7.5.0).</p>
 <h2 id="getting-an-up-to-date-python-version">Getting an up-to-date python version</h2>
-<p>In order to get an up-to-date python version we first need to use an updated gcc version. 
+<p>In order to get an up-to-date python version we first need to use an updated gcc version.
 Fortunately, conda has an updated gcc toolset that can be installed.</p>
-<pre><code>*** SDF Terminal ***
+<div class="highlight"><pre><span></span><code>***<span class="w"> </span>SDF<span class="w"> </span>Terminal<span class="w"> </span>***
 
-conda create -n python-v3.11 gcc_linux-64=11.2.0 python=3.11.3
+conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>python-v3.11<span class="w"> </span>gcc_linux-64<span class="o">=</span><span class="m">11</span>.2.0<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11.3
 
-conda activate python-v3.11
+conda<span class="w"> </span>activate<span class="w"> </span>python-v3.11
 
 python
 
-exit()
-</code></pre>
+exit<span class="o">()</span>
+</code></pre></div>
 <h2 id="running-r-scripts-on-the-sdf">Running R scripts on the SDF</h2>
 <p>There is a default version of R available on the SDF v4.1.2. Alternative R versions can be installed using conda similar to the python conda environment above.</p>
-<pre><code>conda create -n r-v4.3 gcc_linux-64=11.2.0 r-base=4.3
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>r-v4.3<span class="w"> </span>gcc_linux-64<span class="o">=</span><span class="m">11</span>.2.0<span class="w"> </span>r-base<span class="o">=</span><span class="m">4</span>.3
 
-conda activate r-v4.3
+conda<span class="w"> </span>activate<span class="w"> </span>r-v4.3
 
 R
 
-q()
-</code></pre>
+q<span class="o">()</span>
+</code></pre></div>
 <h2 id="final-points">Final points</h2>
 <ul>
 <li>
 <p>The SDF, like the rest of the SHS, is separated from the internet. The installation of python/R libraries to your environment is from a local copy of the respective conda/CRAN library repositories. Therefore, not all packages may be available and not all package versions may be available.</p>
 </li>
 <li>
-<p>It is discouraged to run extensive python/R analyses without submitting them as job requests using Slurm. </p>
+<p>It is discouraged to run extensive python/R analyses without submitting them as job requests using Slurm.</p>
 </li>
 </ul>
 
