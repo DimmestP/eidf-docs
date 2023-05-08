@@ -17,7 +17,7 @@
         <link rel="next" href="../../services/virtualmachines/flavours/">
       
       <link rel="icon" href="../../images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.8">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
     
     
       
@@ -25,10 +25,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ded33207.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a6bdf11c.min.css">
       
       
 
@@ -1424,6 +1424,7 @@
   
 
 
+<h1 id="ssh-access-to-virtual-machines-using-the-eidf-gateway-jump-host">SSH Access to Virtual Machines using the EIDF-Gateway Jump Host</h1>
 <style>
 .borderimg1 {
   border: 5px solid transparent;
@@ -1439,7 +1440,6 @@
 }
 </style>
 
-<h1 id="ssh-access-to-virtual-machines-using-the-eidf-gateway-jump-host">SSH Access to Virtual Machines using the EIDF-Gateway Jump Host</h1>
 <p>The EIDF-Gateway is an SSH gateway suitable for accessing EIDF Services via a console or terminal. As the gateway cannot be 'landed' on, a user can only pass through it and so the destination (the VM IP) has to be known for the service to work. Users connect to their VM through the jump host using their given accounts.</p>
 <h2 id="generating-and-adding-an-ssh-key">Generating and Adding an SSH Key</h2>
 <p>In order to make use of the EIDF-Gateway, your EIDF account needs an SSH-Key associated with it.
@@ -1457,8 +1457,7 @@ If not, you'll need to generate an SSH-Key, to do this:</p>
 <h3 id="generate-a-new-ssh-key">Generate a new SSH Key</h3>
 <ol>
 <li>Open a new window of whatever terminal you will use to SSH to EIDF.</li>
-<li>Generate a new SSH Key:
-<code>$ ssh-keygen</code></li>
+<li>Generate a new SSH Key: <code>$ ssh-keygen</code></li>
 <li>Input the directory and filename of they key. It's recommended to make this something like 'eidf-gateway' so it's easier to identify later</li>
 <li>Press enter to finish generating the key</li>
 </ol>
@@ -1470,8 +1469,7 @@ If not, you'll need to generate an SSH-Key, to do this:</p>
 <li>Select your username</li>
 <li>Select the plus button under  'Credentials'</li>
 <li>Select 'Choose File' to upload the PUBLIC (.pub) ssh key generated in the last step, or open the <ssh-key>.pub file you just created and copy its contents into the text box.</li>
-<li>Click 'Upload Credential'  <br>
-It should look something like this:</li>
+<li>Click 'Upload Credential'  <br> It should look something like this:</li>
 </ol>
 <p><img alt="eidf-portal-ssh" class="border-img" src="/eidf-docs/images/access/eidf-portal-ssh.png" /></p>
 <h4 id="adding-a-new-ssh-key-via-safe">Adding a new SSH Key via SAFE</h4>
@@ -1494,12 +1492,11 @@ However, select your '[username]@EIDF' login account, not 'Archer2' as specified
 <li>If ‘OpenSSH Client’ is not under ‘Installed Features’, click the ‘Add a Feature’ button</li>
 <li>Search ‘OpenSSH Client’</li>
 <li>Select the check box next to ‘OpenSSH Client’ and click ‘Install’</li>
-<li>Once this is installed, you can reach your VM by opening CMD and running:<br>
-<code>$ ssh -J [username]@eidf-gateway.epcc.ed.ac.uk [username]@[vm_ip]</code></li>
+<li>Once this is installed, you can reach your VM by opening CMD and running: <br> <code>$ ssh -J [username]@eidf-gateway.epcc.ed.ac.uk [username]@[vm_ip]</code></li>
 </ol>
 <h3 id="installing-mobaxterm">Installing MobaXTerm</h3>
 <ol>
-<li>Download <a href="https://mobaxterm.mobatek.net/">MobaXTerm</a> from https://mobaxterm.mobatek.net/</li>
+<li>Download <a href="https://mobaxterm.mobatek.net/">MobaXTerm</a> from <a href="https://mobaxterm.mobatek.net/">https://mobaxterm.mobatek.net/</a></li>
 <li>Once installed click the ‘Session’ button in the top left corner</li>
 <li>Click ‘SSH’</li>
 <li>In the ‘Remote Host’ section, specify the VM IP</li>
@@ -1513,10 +1510,8 @@ However, select your '[username]@EIDF' login account, not 'Archer2' as specified
 </ol>
 <h2 id="accessing-from-macoslinux">Accessing From MacOS/Linux</h2>
 <p>OpenSSH is installed on Linux and MacOS usually by default, so you can access the gateway natively from the terminal. <br>
-The '-J' flag is use to specify that we will access the second specified host by jumping through the first specified host like the example below.<br>
-<code>$ ssh -J [username]@jumphost [username]@target</code></p>
-<p>To access EIDF Services:<br>
-<code>$ ssh -J [username]@eidf-gateway.epcc.ed.ac.uk [username]@[vm_ip]</code></p>
+The '-J' flag is use to specify that we will access the second specified host by jumping through the first specified host like the example below.<br> <code>$ ssh -J [username]@jumphost [username]@target</code></p>
+<p>To access EIDF Services: <br> <code>$ ssh -J [username]@eidf-gateway.epcc.ed.ac.uk [username]@[vm_ip]</code></p>
 
 
 
@@ -1557,7 +1552,7 @@ The '-J' flag is use to specify that we will access the second specified host by
     <script id="__config" type="application/json">{"base": "../..", "features": ["tabs"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.51198bba.min.js"></script>
+      <script src="../../assets/javascripts/bundle.fac441b0.min.js"></script>
       
     
   </body>

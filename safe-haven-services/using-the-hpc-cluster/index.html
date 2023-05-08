@@ -17,7 +17,7 @@
         <link rel="next" href="../superdome-flex-tutorial/L1_Accessing_the_SDF_Inside_the_EPCC_TRE/">
       
       <link rel="icon" href="../../images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.8">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
     
     
       
@@ -25,10 +25,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ded33207.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a6bdf11c.min.css">
       
       
 
@@ -1472,11 +1472,9 @@ mpirun<span class="w"> </span><span class="si">${</span><span class="nv">HOME</s
 <p>The /safe_data file system with the project data cannot be used by the HPC system. The /safe_data file system has restricted access and a relatively slow IO performance compared to the parallel BeeGFS file system storage on the HPC system.</p>
 <p>The process to use the TRE HPC service is to copy and synchronise the project code and data files on the /safe_data file system with the HPC /home file system before and after login sessions and job runs on the HPC cluster. Assuming all the code and data required for the job is in a directory 'current_wip' on the project VM, the workflow is as follows:</p>
 <ol>
-<li>Copy project code and data to the HPC cluster (from the desktop VM)
-<code>rsync -avPz -e ssh /safe_data/my_project/current_wip shs-sdf01:</code></li>
+<li>Copy project code and data to the HPC cluster (from the desktop VM) <code>rsync -avPz -e ssh /safe_data/my_project/current_wip shs-sdf01:</code></li>
 <li>Run jobs/tests/analysis <code>ssh shs-sdf01</code>, <code>cd current_wip</code>, <code>sbatch/srun my_job</code></li>
-<li>Copy any changed project code and data back to /safe_data (from the desktop VM)
-<code>rsync -avPz -e ssh shs-sdf01:current_wip /safe_data/my_project</code></li>
+<li>Copy any changed project code and data back to /safe_data (from the desktop VM) <code>rsync -avPz -e ssh shs-sdf01:current_wip /safe_data/my_project</code></li>
 <li>Optionally delete the code and data from the HPC cluster working directory.</li>
 </ol>
 
@@ -1519,7 +1517,7 @@ mpirun<span class="w"> </span><span class="si">${</span><span class="nv">HOME</s
     <script id="__config" type="application/json">{"base": "../..", "features": ["tabs"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.51198bba.min.js"></script>
+      <script src="../../assets/javascripts/bundle.fac441b0.min.js"></script>
       
     
   </body>
