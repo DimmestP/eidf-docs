@@ -17,7 +17,7 @@
         <link rel="next" href="../L5_parallelised_r_analysis/">
       
       <link rel="icon" href="../../../images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.10">
     
     
       
@@ -1401,6 +1401,11 @@ The three data objects that Dask can easily split up are:</p>
 </li>
 </ul>
 <h3 id="example-dask-array">Example Dask array</h3>
+<p>You may need to install dask or create a new conda environment with it in.</p>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>dask-env<span class="w"> </span>gcc_linux-64<span class="o">=</span><span class="m">11</span>.2.0<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11.3<span class="w"> </span>dask
+
+conda<span class="w"> </span>activate<span class="w"> </span>dask-env
+</code></pre></div>
 <p>Try running the following Python using dask:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
 
@@ -1433,11 +1438,13 @@ Experiment with varying blocksizes, although you should be aware that making you
 <p>You can also experiment with Dask Bags to see how that functionality works:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">dask.bag</span> <span class="k">as</span> <span class="nn">db</span>
 <span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">add</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">from_sequence</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">npartitions</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
 </code></pre></div>
 <h2 id="dask-delayed">Dask Delayed</h2>
-<p>Dask delayed lets you construct your own task graphs/parallelism from Python functions. Try parallelising the code below using the .delayed function or the @delayed decorator:</p>
+<p>Dask delayed lets you construct your own task graphs/parallelism from Python functions.
+You can find out more about dask delayed from the <a href="https://docs.dask.org/en/stable/delayed.html">dask documentation</a>
+Try parallelising the code below using the .delayed function or the @delayed decorator, an example answer can be found <a href="https://github.com/EPCCed/archer2-data-science/blob/master/exercises/dask/delayed_functions.py">here</a>.</p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">inc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
 
@@ -1506,7 +1513,7 @@ Experiment with varying blocksizes, although you should be aware that making you
 <p>Your task is to parallelise this code using Dask Array functionality.
 Using the base python code above, extend it with Dask Array for the main arrays in the computation. Remember you need to specify a chunk size with Dask Arrays, and you will also need to call compute at some point to force Dask to actually undertake the computation. Note, depending on where you run this you may not see any actual speed up of the computation. You need access to extra resources (compute cores) for the calculation to go faster.
 If in doubt, submit a python script of your solution to the SDF compute nodes to see if you see speed up there.
-If you are struggling with this parallelisation exercise, there is a solution available for you in the dask- mandel.py file.</p>
+If you are struggling with this parallelisation exercise, there is a solution available for you <a href="https://github.com/EPCCed/archer2-data-science/blob/master/exercises/dask/dask-mandel.py">here</a>.</p>
 <h2 id="pi-exercise">Pi Exercise</h2>
 <p>The code below calculates Pi using a function that can split it up into chunks and calculate each chunk separately. Currently it uses a single chunk to produce the final value of Pi, but that can be changed by calling pi_chunk multiple times with different inputs. This is not necessarily the most efficient method for calculating Pi in serial, but it does enable parallelisation of the calculation of Pi using multiple copies of pi_chunk called simultaneously.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">time</span>
@@ -1552,7 +1559,7 @@ If you are struggling with this parallelisation exercise, there is a solution av
 <p>In that case you need to encapsulate your code within a main function, using something like this:</p>
 <div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 </code></pre></div>
-<p>If you are struggling with this exercise then there is a solution available for you in the dask-pi.py file.</p>
+<p>If you are struggling with this exercise then there is a solution available for you <a href="https://github.com/EPCCed/archer2-data-science/blob/master/exercises/dask/dask-pi.py">here</a>.</p>
 <h2 id="signposting">Signposting</h2>
 <ul>
 <li>

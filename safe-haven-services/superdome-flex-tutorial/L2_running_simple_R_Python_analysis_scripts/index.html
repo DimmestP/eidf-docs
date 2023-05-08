@@ -17,7 +17,7 @@
         <link rel="next" href="../L3_submitting_scripts_to_slurm/">
       
       <link rel="icon" href="../../../images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.10">
     
     
       
@@ -1000,8 +1000,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#setting-up-conda-environments-on-the-sdf" class="md-nav__link">
-    Setting up conda environments on the SDF
+  <a href="#setting-up-conda-environments-on-you-first-connection-to-the-sdf" class="md-nav__link">
+    Setting up conda environments on you first connection to the SDF
   </a>
   
 </li>
@@ -1259,8 +1259,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#setting-up-conda-environments-on-the-sdf" class="md-nav__link">
-    Setting up conda environments on the SDF
+  <a href="#setting-up-conda-environments-on-you-first-connection-to-the-sdf" class="md-nav__link">
+    Setting up conda environments on you first connection to the SDF
   </a>
   
 </li>
@@ -1309,7 +1309,7 @@
 The Linux distribution differs between the two with the SDF using Red Hat Enterprise Linux (RHEL) and the Desktop VMs using Ubuntu.
 Therefore, it is highly advisable to use virtual environments (e.g. conda environments) to complete any analysis and aid the transition between the two distributions.
 Conda should run out of the box on the Desktop VMs, but some configuration is required on the SDF.</p>
-<h2 id="setting-up-conda-environments-on-the-sdf">Setting up conda environments on the SDF</h2>
+<h2 id="setting-up-conda-environments-on-you-first-connection-to-the-sdf">Setting up conda environments on you first connection to the SDF</h2>
 <div class="highlight"><pre><span></span><code>***<span class="w"> </span>SDF<span class="w"> </span>Terminal<span class="w"> </span>***
 
 conda<span class="w"> </span>activate<span class="w"> </span>base<span class="w"> </span><span class="c1"># Test conda environment</span>
@@ -1332,6 +1332,8 @@ exit<span class="o">()</span>
 Fortunately, conda has an updated gcc toolset that can be installed.</p>
 <div class="highlight"><pre><span></span><code>***<span class="w"> </span>SDF<span class="w"> </span>Terminal<span class="w"> </span>***
 
+conda<span class="w"> </span>activate<span class="w"> </span>base<span class="w"> </span><span class="c1"># If conda isn&#39;t already active</span>
+
 conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>python-v3.11<span class="w"> </span>gcc_linux-64<span class="o">=</span><span class="m">11</span>.2.0<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11.3
 
 conda<span class="w"> </span>activate<span class="w"> </span>python-v3.11
@@ -1341,7 +1343,7 @@ python
 exit<span class="o">()</span>
 </code></pre></div>
 <h2 id="running-r-scripts-on-the-sdf">Running R scripts on the SDF</h2>
-<p>There is a default version of R available on the SDF v4.1.2. Alternative R versions can be installed using conda similar to the python conda environment above.</p>
+<p>The default version of R available on the SDF is v4.1.2. Alternative R versions can be installed using conda similar to the python conda environment above.</p>
 <div class="highlight"><pre><span></span><code>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>r-v4.3<span class="w"> </span>gcc_linux-64<span class="o">=</span><span class="m">11</span>.2.0<span class="w"> </span>r-base<span class="o">=</span><span class="m">4</span>.3
 
 conda<span class="w"> </span>activate<span class="w"> </span>r-v4.3

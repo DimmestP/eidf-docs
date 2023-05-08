@@ -17,7 +17,7 @@
         <link rel="next" href="../../../bespoke/eddash/workshops/">
       
       <link rel="icon" href="../../../images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.10">
     
     
       
@@ -1049,8 +1049,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#r" class="md-nav__link">
-    R
+  <a href="#example-parallelised-r-code" class="md-nav__link">
+    Example parallelised R code
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parallelisation-with-datatables" class="md-nav__link">
+    Parallelisation with data.tables
   </a>
   
 </li>
@@ -1058,6 +1065,33 @@
         <li class="md-nav__item">
   <a href="#loop-and-function-parallelism" class="md-nav__link">
     Loop and function parallelism
+  </a>
+  
+    <nav class="md-nav" aria-label="Loop and function parallelism">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parallelisation-with-foreach" class="md-nav__link">
+    Parallelisation with foreach
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parallelisation-with-doparallel" class="md-nav__link">
+    Parallelisation with doParallel
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-parallelism" class="md-nav__link">
+    Cluster parallelism
   </a>
   
 </li>
@@ -1259,8 +1293,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#r" class="md-nav__link">
-    R
+  <a href="#example-parallelised-r-code" class="md-nav__link">
+    Example parallelised R code
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parallelisation-with-datatables" class="md-nav__link">
+    Parallelisation with data.tables
   </a>
   
 </li>
@@ -1268,6 +1309,33 @@
         <li class="md-nav__item">
   <a href="#loop-and-function-parallelism" class="md-nav__link">
     Loop and function parallelism
+  </a>
+  
+    <nav class="md-nav" aria-label="Loop and function parallelism">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parallelisation-with-foreach" class="md-nav__link">
+    Parallelisation with foreach
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parallelisation-with-doparallel" class="md-nav__link">
+    Parallelisation with doParallel
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cluster-parallelism" class="md-nav__link">
+    Cluster parallelism
   </a>
   
 </li>
@@ -1293,8 +1361,11 @@
 <h1 id="parallelised-r-analysis">Parallelised R Analysis</h1>
 <p>This lesson is adapted from a workshop introducing users to <a href="https://github.com/EPCCed/archer2-data-science/blob/master/exercises/practical5.pdf">running R scripts on ARCHER2</a> as developed by Adrian Jackson.</p>
 <h2 id="introduction">Introduction</h2>
-<p>In this exercise we are going to try different methods of parallelising R on the SDF. This will include single node parallelisation functionality (e.g. using threads or processes to use cores within a single node), and distributed memory functionality that enables the parallelisation of R programs across multiple nodes in the system.</p>
-<h2 id="r">R</h2>
+<p>In this exercise we are going to try different methods of parallelising R on the SDF. This will include single node parallelisation functionality (e.g. using threads or processes to use cores within a single node), and distributed memory functionality that enables the parallelisation of R programs across multiple nodes.</p>
+<h2 id="example-parallelised-r-code">Example parallelised R code</h2>
+<p>You may need to activate an R conda environment.</p>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>activate<span class="w"> </span>r-v4.2
+</code></pre></div>
 <p>Try running the following R script using R on the SDF login node:</p>
 <div class="highlight"><pre><span></span><code><span class="n">n</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">8</span><span class="o">*</span><span class="m">2048</span>
 <span class="n">A</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="w"> </span><span class="nf">rnorm</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="n">ncol</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="o">=</span><span class="n">n</span><span class="w"> </span><span class="p">)</span>
@@ -1319,13 +1390,10 @@
 <span class="nb">export</span><span class="w"> </span><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">2</span>
 </code></pre></div>
 <p>You may also notice that not all the R script is parallelised. Only the actual matrix multiplication is undertaken in parallel, the initialisation/creation of the matrices is done in serial.</p>
+<h2 id="parallelisation-with-datatables">Parallelisation with data.tables</h2>
 <p>We can also experiment with the implicit parallelism in other libraries, such as data.table. You will first need to install this library on the SDF. To do this you can simply run the following command:</p>
 <div class="highlight"><pre><span></span><code><span class="nf">install.packages</span><span class="p">(</span><span class="n">data.table</span><span class="p">)</span>
 </code></pre></div>
-<p>However, if you intend to use R on the compute nodes, you will need to ensure that the library is installed on the /work filesystem so it is accessible from both login and compute nodes. You can do this by setting the following variable before you run R:</p>
-<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">R_LIBS_USER</span><span class="o">=</span>/work/ta055/ta055/<span class="nv">$USER</span>/Rinstall
-</code></pre></div>
-<p>This instructs R to install and use libraries from the above directory. You do not need to call it Rinstall, it can be called any name you like, but it will need to be on the /work filesystem to be accessible from the compute nodes.</p>
 <p>Once you have installed data.table you can experiment with the following code:</p>
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">data.table</span><span class="p">)</span>
 <span class="n">venue_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.table</span><span class="p">(</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">50000000</span><span class="p">,</span>
@@ -1382,6 +1450,7 @@ Rscript<span class="w"> </span>./data_table_test.R
 <span class="nb">export</span><span class="w"> </span><span class="nv">MC_CORES</span><span class="o">=</span><span class="m">16</span>
 </code></pre></div>
 <p>If you have separate functions then the above approach will provide a simple method for parallelising using the resources within a single node. However, if your functionality is more loop-based, then you may not wish to have to package this up into separate functions to parallelise.</p>
+<h3 id="parallelisation-with-foreach">Parallelisation with foreach</h3>
 <p>The <code>foreach</code> package can be used to parallelise loops as well as functions. Consider a loop of the following form:</p>
 <div class="highlight"><pre><span></span><code><span class="n">main_list</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">()</span>
 <span class="nf">for </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -1407,6 +1476,7 @@ We can now run the following code in R:</p>
 <span class="nf">print</span><span class="p">(</span><span class="n">rf</span><span class="p">)</span>
 </code></pre></div>
 <p>Implement the above code and run with a <code>system.time</code> to see how long it takes. Once you have done this you can change the <code>%do%</code> to a <code>%dopar%</code> and re-run. Does this provide any performance benefits?</p>
+<h3 id="parallelisation-with-doparallel">Parallelisation with doParallel</h3>
 <p>To exploit the parallelism with <code>dopar</code> we need to provide parallel execution functionality and configure it to use extra cores on the system. One method to do this is using the <code>doParallel</code> package.</p>
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">doParallel</span><span class="p">)</span>
 <span class="nf">registerDoParallel</span><span class="p">(</span><span class="m">8</span><span class="p">)</span>
@@ -1415,6 +1485,7 @@ We can now run the following code in R:</p>
 Experiment with different numbers of workers by changing the number set in <code>registerDoParallel(8)</code> to see what kind of performance you can get.
 Note, you may also need to change the number of clusters used in the foreach, e.g. what is specified in the <code>rep(250, 4)</code> part of the code, to enable more than 4 different sets to be run at once if using more than 4 workers.
 The amount of parallel workers you can use is dependent on the hardware you have access to, the number of workers you specify when you setup your parallel backend, and the amount of chunks of work you have to distribute with your foreach configuration.</p>
+<h2 id="cluster-parallelism">Cluster parallelism</h2>
 <p>It is possible to use different parallel backends for <code>foreach</code>. The one we have used in the example above creates new worker processes to provide the parallelism, but you can also use larger numbers of workers through a parallel cluster, e.g.:</p>
 <div class="highlight"><pre><span></span><code><span class="n">my.cluster</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">parallel</span><span class="o">::</span><span class="nf">makeCluster</span><span class="p">(</span><span class="m">8</span><span class="p">)</span>
 <span class="nf">registerDoParallel</span><span class="p">(</span><span class="n">cl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">my.cluster</span><span class="p">)</span>

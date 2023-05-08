@@ -17,7 +17,7 @@
         <link rel="next" href="../L4_parallelised_python_analysis/">
       
       <link rel="icon" href="../../../images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.10">
     
     
       
@@ -1497,11 +1497,11 @@ cat<span class="w"> </span>example_job_script.log<span class="w"> </span><span c
 <p>Although submitting job steps containing python/R analysis scripts can be done with srun directly, as below, it is more common to submit bash scripts that call the analysis scripts after setting up the environment (i.e. after calling conda activate).</p>
 <div class="highlight"><pre><span></span><code>****<span class="w"> </span>Python<span class="w"> </span>code<span class="w"> </span>job<span class="w"> </span>submission<span class="w"> </span>****
 
-srun<span class="w"> </span>--job-name<span class="o">=</span>my_first_python_job<span class="w"> </span>--nodes<span class="w"> </span><span class="m">1</span><span class="w"> </span>--ntasks<span class="w"> </span><span class="m">10</span><span class="w"> </span>--cpus-per-task<span class="w"> </span><span class="m">2</span><span class="w"> </span>--mem<span class="w"> </span>10G<span class="w"> </span>python<span class="w"> </span>example_script.py
+srun<span class="w"> </span>--job-name<span class="o">=</span>my_first_python_job<span class="w"> </span>--nodes<span class="w"> </span><span class="m">1</span><span class="w"> </span>--ntasks<span class="w"> </span><span class="m">10</span><span class="w"> </span>--cpus-per-task<span class="w"> </span><span class="m">2</span><span class="w"> </span>--mem<span class="w"> </span>10G<span class="w"> </span>python3<span class="w"> </span>example_script.py
 
 ****<span class="w"> </span>R<span class="w"> </span>code<span class="w"> </span>job<span class="w"> </span>submission<span class="w"> </span>****
 
-srun<span class="w"> </span>--job-name<span class="o">=</span>my_first_r_job<span class="w"> </span>--nodes<span class="w"> </span><span class="m">1</span><span class="w"> </span>--ntasks<span class="w"> </span><span class="m">10</span><span class="w"> </span>--cpus-per-task<span class="w"> </span><span class="m">2</span><span class="w"> </span>--mem<span class="w"> </span>10G<span class="w"> </span>Rscript<span class="w"> </span>-e<span class="w"> </span>example_script.R
+srun<span class="w"> </span>--job-name<span class="o">=</span>my_first_r_job<span class="w"> </span>--nodes<span class="w"> </span><span class="m">1</span><span class="w"> </span>--ntasks<span class="w"> </span><span class="m">10</span><span class="w"> </span>--cpus-per-task<span class="w"> </span><span class="m">2</span><span class="w"> </span>--mem<span class="w"> </span>10G<span class="w"> </span>Rscript<span class="w"> </span>example_script.R
 </code></pre></div>
 <h2 id="signposting">Signposting</h2>
 <p>Useful websites for learning more about Slurm:</p>

@@ -17,7 +17,7 @@
         <link rel="next" href="../L2_running_simple_R_Python_analysis_scripts/">
       
       <link rel="icon" href="../../../images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.10">
     
     
       
@@ -1426,7 +1426,7 @@ ssh<span class="w"> </span>shs-sdf01
 ls<span class="w"> </span><span class="c1"># test.txt is not here</span>
 <span class="nb">exit</span>
 
-scp<span class="w"> </span>test.txt<span class="w"> </span>shs-sdf01
+scp<span class="w"> </span>test.txt<span class="w"> </span>shs-sdf01:/home/&lt;USERNAME&gt;/
 
 ssh<span class="w"> </span>shs-sdf01
 &lt;Enter<span class="w"> </span>VM<span class="w"> </span>password&gt;
@@ -1439,7 +1439,7 @@ ls<span class="w"> </span><span class="c1"># test.txt is here</span>
 
 man<span class="w"> </span>rsync<span class="w"> </span><span class="c1"># check instructions for using rsync</span>
 
-rsync<span class="w"> </span>-avPz<span class="w"> </span>-e<span class="w"> </span>ssh<span class="w"> </span>/safe_data/my_project/current_wip<span class="w"> </span>shs-sdf01:<span class="w"> </span><span class="c1"># sync project folder and SDF home folder</span>
+rsync<span class="w"> </span>-avPz<span class="w"> </span>-e<span class="w"> </span>ssh<span class="w"> </span>/safe_data/my_project/<span class="w"> </span>shs-sdf01:/home/&lt;USERNAME&gt;/my_project/<span class="w"> </span><span class="c1"># sync project folder and SDF home folder</span>
 
 ssh<span class="w"> </span>shs-sdf01
 &lt;Enter<span class="w"> </span>VM<span class="w"> </span>password&gt;
@@ -1448,7 +1448,7 @@ ssh<span class="w"> </span>shs-sdf01
 
 <span class="nb">exit</span>
 
-rsync<span class="w"> </span>-avPz<span class="w"> </span>-e<span class="w"> </span>ssh<span class="w"> </span>/safe_data/my_project/current_wip<span class="w"> </span>shs-sdf01:<span class="w"> </span><span class="c1"># sync project file and ssh home page # re-syncronise project folder and SDF home folder</span>
+rsync<span class="w"> </span>-avPz<span class="w"> </span>-e<span class="w"> </span>ssh<span class="w"> </span>/safe_data/my_project/current_wip<span class="w"> </span>shs-sdf01:/home/&lt;USERNAME&gt;/my_project/<span class="w"> </span><span class="c1"># sync project file and ssh home page # re-syncronise project folder and SDF home folder</span>
 
 ***<span class="w"> </span>Optionally<span class="w"> </span>remove<span class="w"> </span>the<span class="w"> </span>project<span class="w"> </span>folder<span class="w"> </span>on<span class="w"> </span>SDF<span class="w"> </span>***
 </code></pre></div>
